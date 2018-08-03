@@ -1,2 +1,3 @@
 .vagrant/
+metering_data/
 *.log
