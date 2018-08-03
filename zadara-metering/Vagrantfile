@@ -151,13 +151,6 @@ echo "Ingesting metering files into InfluxDB..."
 /vagrant/bin/zadara-metering-linux-amd64 /vagrant/metering_data
 SCRIPT
 
-if Dir.glob("#{File.dirname(__FILE__)}/.vagrant/machines/default/*").empty? || ARGV[1] == '--provision'
-    print "This Vagrant box allows historical analysis of VPSA metering from the database downloaded from the VPSA settings section."
-    print "Metering data MUST exist in './metering_data' - and should retain the original filename(s) - i.e. metering_*.zip"
-    print "Ensure this data exists in the metering_data directory, then press enter to continue..."
-    STDIN.gets.chomp
-end
-
 Vagrant.configure("2") do |config|
     config.vm.box = $box_image
 
