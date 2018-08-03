@@ -1,0 +1,189 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+# Adapted from: https://github.com/equelin/vagrant-influxdb-grafana/blob/master/Vagrantfile
+
+## Infrastructure
+$vm_cpus    = 2
+$vm_memory  = 2048 # In megabytes
+$box_image  = "ubuntu/bionic64"
+
+## InfluxDB & Grafana
+$database_name      = "zadara"
+$datasource_name    = "DS_ZADARA"
+$grafana_dashboard  = "grafana-dashboard.json"
+$grafana_local_port = "3000"
+
+## First Run Scripts
+$install_influxdb = <<SCRIPT
+echo "Installing InfluxDB..."
+curl -sL https://repos.influxdata.com/influxdb.key | sudo apt-key add - 2>/dev/null
+source /etc/lsb-release
+echo "deb https://repos.influxdata.com/${DISTRIB_ID,,} ${DISTRIB_CODENAME} stable" | sudo tee /etc/apt/sources.list.d/influxdb.list
+sudo apt-get update && sudo apt-get install -y influxdb
+sudo systemctl enable influxdb.service
+sudo systemctl start influxdb
+SCRIPT
+
+$install_grafana = <<SCRIPT
+echo "Installing Grafana..."
+sudo apt-get install -y adduser libfontconfig unzip
+cat <<EOF >/etc/apt/sources.list
+deb https://packagecloud.io/grafana/stable/debian/ stretch main
+EOF
+curl -sL https://packagecloud.io/gpg.key | sudo apt-key add - 2>/dev/null
+sudo apt-get update && sudo apt-get install -y grafana
+mkdir -p /etc/systemd/system/grafana-server.service.d
+cat <<EOF >/etc/systemd/system/grafana-server.service.d/overrides.conf
+[Service]
+Environment=GF_DEFAULT_INSTANCE_NAME=zadara
+Environment=GF_AUTH_ANONYMOUS_ENABLED=true
+Environment=GF_AUTH_ANONYMOUS_ORG_NAME=zadara
+Environment=GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
+EOF
+sudo systemctl daemon-reload
+sudo systemctl enable grafana-server
+sudo systemctl enable grafana-server.service
+sudo systemctl start grafana-server
+SCRIPT
+
+$create_influx_database = <<SCRIPT
+echo "Create Influx database..."
+timeout 30 bash -c "until </dev/tcp/localhost/8086 2>/dev/null; do sleep 1; done" 2>/dev/null
+
+curl -s \
+    -XPOST \
+    http://localhost:8086/query \
+    --data-urlencode \
+    "q=CREATE DATABASE #{$database_name} WITH DURATION 1000w REPLICATION 1 SHARD DURATION 1000w NAME \"zadara_duration\""
+SCRIPT
+
+$create_grafana_organization = <<SCRIPT
+echo "Create Grafana organization..."
+timeout 30 bash -c "until </dev/tcp/localhost/3000 2>/dev/null; do sleep 1; done" 2>/dev/null
+
+curl -s \
+    -H "Accept: application/json" \
+    -H "Content-Type: application/x-www-form-urlencoded" \
+    -XPUT http://admin:admin@localhost:3000/api/orgs/1 \
+    -d "name=zadara"
+SCRIPT
+
+$create_grafana_data_source = <<SCRIPT
+echo "Create Grafana data source..."
+
+curl -s -H "Content-Type: application/json" \
+    -XPOST http://admin:admin@localhost:3000/api/datasources \
+    -d @- <<EOF
+    {
+        "name":"#{$datasource_name}",
+        "type":"influxdb",
+        "url":"http://localhost:8086",
+        "access":"proxy",
+        "basicAuth":false,
+        "database":"#{$database_name}",
+        "isDefault":true
+    }
+EOF
+SCRIPT
+
+$import_grafana_dashboard = <<SCRIPT
+echo "Import Grafana dashboard..."
+
+curl -s -H "Accept: application/json" \
+    -H "Content-Type: application/json" \
+    -H "charset: utf-8" \
+    -XPOST http://admin:admin@localhost:3000/api/dashboards/import \
+    --data-binary @/vagrant/#{$grafana_dashboard}
+
+# Favorite the dashboard
+curl -s -XPOST http://admin:admin@localhost:3000/api/user/stars/dashboard/1
+
+# Set the dashboard to the default when loading Grafana
+curl -s -H "Content-Type: application/json" \
+    -XPUT http://admin:admin@localhost:3000/api/org/preferences \
+    -d @- <<EOF
+    {
+        "homeDashboardId":1,
+        "theme":"",
+        "timezone":""
+    }
+EOF
+SCRIPT
+
+$create_extract_script = <<SCRIPT
+echo "Creating extract script..."
+
+cat <<"EOF" >/usr/local/bin/extract.sh
+#!/bin/bash
+
+dest=/vagrant/metering_data
+dirlist=$(ls -1 ${dest}/metering*.zip)
+
+if [ $? -ne 0 ]; then
+    echo "Cannot locate any zipped metering databases in the "metering_files" directory.  No new databases will be processed."
+else
+    for meteringpackage in ${dirlist}; do
+        filename=$(basename ${meteringpackage})
+        targetfile=$(sed -e 's#^metering_\\(.*\\)_\\(20[0-9]\\)\\(.*\\).zip#\\2\\3#g' <<< ${filename})
+        targetfolder=$(sed -e 's#^metering_\\(.*\\)_'${targetfile}'.zip#\\1#g' <<< ${filename})
+        echo "Extracting ${meteringpackage} to ${dest}/${targetfolder}/${targetfile}..."
+        mkdir -p ${dest}/${targetfolder}
+        unzip -p ${meteringpackage} metering > ${dest}/${targetfolder}/${targetfile}.db
+        rm -f "${meteringpackage}"
+    done
+fi
+EOF
+
+chmod +x /usr/local/bin/extract.sh
+SCRIPT
+
+## Every Run Scripts
+$extract_metering_files = <<SCRIPT
+echo "Extracting metering information..."
+
+/usr/local/bin/extract.sh
+SCRIPT
+
+$ingest_metering_files = <<SCRIPT
+echo "Ingesting metering files into InfluxDB..."
+
+/vagrant/bin/zadara-metering-linux-amd64 /vagrant/metering_data
+SCRIPT
+
+if Dir.glob("#{File.dirname(__FILE__)}/.vagrant/machines/default/*").empty? || ARGV[1] == '--provision'
+    print "This Vagrant box allows historical analysis of VPSA metering from the database downloaded from the VPSA settings section."
+    print "Metering data MUST exist in './metering_data' - and should retain the original filename(s) - i.e. metering_*.zip"
+    print "Ensure this data exists in the metering_data directory, then press enter to continue..."
+    STDIN.gets.chomp
+end
+
+Vagrant.configure("2") do |config|
+    config.vm.box = $box_image
+
+    config.vm.network "forwarded_port", :guest => 3000, :host => $grafana_local_port
+
+    config.vm.provider "virtualbox" do |vb|
+        vb.cpus = $vm_cpus
+        vb.memory = $vm_memory
+    end
+    
+    # One time setup of VM
+    config.vm.provision "shell", :run => 'once', inline: <<-SHELL
+        #{$install_influxdb}
+        #{$install_grafana}
+        #{$create_influx_database}
+        #{$create_grafana_organization}
+        #{$create_grafana_data_source}
+        #{$import_grafana_dashboard}
+        #{$create_extract_script}
+    SHELL
+
+    # Run every time "vagrant up" is called
+    config.vm.provision "shell", :run => 'always', inline: <<-SHELL
+        #{$extract_metering_files}
+        #{$ingest_metering_files}
+    SHELL
+
+    config.vm.post_up_message = "Open Grafana in your browser at: http://localhost:#{$grafana_local_port}"
+end    
