@@ -37,10 +37,7 @@ var (
 
 func usage() {
 	// Output when illegal arguments are passed
-	fmt.Printf("Usage: %v [OPTIONS] [s3://]zsnap-glob*.tar.gz -OR- path/to/previous/zsnapextract\n", os.Args[0])
-	fmt.Println()
-	fmt.Println("Example - Process new zsnaps: zsnaputil test_zsnap-*.tar.gz")
-	fmt.Println("Example - Re-use previously processed zsnaps: zsnaputil /tmp/zsnap_vsa-00000007_695851306")
+	fmt.Printf("Usage: %v path/to/meteringfile.db\n", os.Args[0])
 	fmt.Println()
 	flag.PrintDefaults()
 }
@@ -93,7 +90,7 @@ func run() (err error) {
 		}
 
 		if err = os.Remove(file); err != nil {
-			return err
+			jww.WARN.Println(err)
 		}
 
 		empty, err := isDirEmpty(filepath.Dir(file))
@@ -103,7 +100,9 @@ func run() (err error) {
 		}
 
 		if empty {
-			os.Remove(filepath.Dir(file))
+			if err = os.Remove(filepath.Dir(file)); err != nil {
+				jww.WARN.Println(err)
+			}
 		}
 	}
 
