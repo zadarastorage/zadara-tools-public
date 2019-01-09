@@ -42,7 +42,7 @@ var (
 		14: "OBJECT-STORAGE",
 	}
 	sqlSelect = map[string]string{
-		"metering_info": `
+		"metering_info_ms": `
 SELECT
     "io" as measurement,
     devices.dev_ext_name,
@@ -58,6 +58,39 @@ SELECT
     metering_info.io_errors,
     metering_info.max_cmd,
     metering_info.max_resp_tm_ms AS max_latency_ms,
+    metering_info.time
+FROM
+    metering_info
+    INNER JOIN
+        devices
+        ON (metering_info.dev_dbid = devices.dev_dbid)
+    INNER JOIN
+        io_buckets
+        ON (devices.dev_type = io_buckets.dev_type)
+        AND (metering_info.bucket = io_buckets.bucket)
+    INNER JOIN
+        dev_types
+        ON (devices.dev_type = dev_types.dev_type)
+        AND (dev_types.dev_type = io_buckets.dev_type)
+ORDER BY
+    metering_info.time
+`,
+		"metering_info_us": `
+SELECT
+    "io" as measurement,
+    devices.dev_ext_name,
+    devices.dev_server_name,
+    devices.dev_target_name,
+    io_buckets.bucket_name,
+    dev_types.dev_name,
+    metering_info.interval,
+    ROUND(CAST(metering_info.num_ios AS real) / metering_info.interval, 3) AS iops,
+    ROUND(CAST(metering_info.bytes AS real) / metering_info.interval, 3) AS bps,
+    ROUND(CAST((metering_info.total_resp_tm_us / 1000) AS real) / metering_info.num_ios, 3) AS latency_ms,
+    metering_info.active_ios,
+    metering_info.io_errors,
+    metering_info.max_cmd,
+    ROUND(CAST((metering_info.max_resp_tm_us / 1000) AS real), 3) AS max_latency_ms,
     metering_info.time
 FROM
     metering_info

@@ -99,7 +99,9 @@ func (d *dataio) ingestMeteringTable(tableName string, vpsa string) (err error) 
 	commitSize := 10000
 	var bp client.BatchPoints
 	var interval int64
+	var matchCount int
 	var measurement string
+	var queryName string
 	var remainingChunks int
 	var tableCount int
 
@@ -118,7 +120,22 @@ func (d *dataio) ingestMeteringTable(tableName string, vpsa string) (err error) 
 
 	remainingChunks = tableCount / commitSize
 
-	q := sqlSelect[tableName]
+	// Normalize us to ms for consistency
+	if tableName == "metering_info" {
+		if err = d.input.QueryRow("SELECT count(*) FROM sqlite_master where name = 'metering_info' and sql like('%total_resp_tm_ms%')").Scan(&matchCount); err != nil {
+			return err
+		}
+
+		if matchCount == 0 {
+			queryName = "metering_info_us"
+		} else {
+			queryName = "metering_info_ms"
+		}
+	} else {
+		queryName = tableName
+	}
+
+	q := sqlSelect[queryName]
 	jww.DEBUG.Printf("executing metering query: %v", q)
 	rows, err := d.input.Queryx(q)
 

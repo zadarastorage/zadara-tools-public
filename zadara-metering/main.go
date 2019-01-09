@@ -26,7 +26,7 @@ import (
 	jww "github.com/spf13/jwalterweatherman"
 )
 
-const version = "0.1"
+const version = "0.3"
 
 var (
 	showVersion   bool
