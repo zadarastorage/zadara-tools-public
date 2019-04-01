@@ -90,11 +90,15 @@ SCRIPT
 $import_grafana_dashboard = <<SCRIPT
 echo "Import Grafana dashboard..."
 
+# Add data source to exported dashboard - allows direct exports from Grafana to work without further edits
+raw=$(cat /vagrant/#{$grafana_dashboard})
+full_import=$(echo "{\\"dashboard\\":${raw},\\"inputs\\":[{\\"name\\":\\"DS_DS_ZADARA\\",\\"type\\":\\"datasource\\",\\"pluginId\\":\\"influxdb\\",\\"value\\":\\"DS_ZADARA\\"}],\\"overwrite\\":false}")
+
 curl -s -H "Accept: application/json" \
     -H "Content-Type: application/json" \
     -H "charset: utf-8" \
     -XPOST http://admin:admin@localhost:3000/api/dashboards/import \
-    --data-binary @/vagrant/#{$grafana_dashboard}
+    --data "${full_import}"
 
 # Favorite the dashboard
 curl -s -XPOST http://admin:admin@localhost:3000/api/user/stars/dashboard/1
