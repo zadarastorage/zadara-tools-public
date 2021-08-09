@@ -163,6 +163,7 @@ Vagrant.configure("2") do |config|
     config.vm.provider "virtualbox" do |vb|
         vb.cpus = $vm_cpus
         vb.memory = $vm_memory
+        vb.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
     end
     
     # One time setup of VM
