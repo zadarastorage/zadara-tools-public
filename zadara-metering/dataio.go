@@ -117,9 +117,7 @@ SELECT
     ROUND(CAST(100.0 * metering_sys_info.cpu_system AS real) / (metering_sys_info.cpu_user + metering_sys_info.cpu_system + metering_sys_info.cpu_iowait + metering_sys_info.cpu_idle), 3) AS cpu_system,
     ROUND(CAST(100.0 * metering_sys_info.cpu_iowait AS real) / (metering_sys_info.cpu_user + metering_sys_info.cpu_system + metering_sys_info.cpu_iowait + metering_sys_info.cpu_idle), 3) AS cpu_iowait,
     ROUND(CAST(100.0 * metering_sys_info.cpu_idle AS real) / (metering_sys_info.cpu_user + metering_sys_info.cpu_system + metering_sys_info.cpu_iowait + metering_sys_info.cpu_idle), 3) AS cpu_idle,
-    metering_sys_info.memory AS mem_used,
     metering_sys_info.mem_alloc,
-    metering_sys_info.mem_active,
     metering_sys_info.time
 FROM
     metering_sys_info

@@ -14,19 +14,19 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "6.0.2"
+      "version": "8.1.1"
     },
     {
       "type": "panel",
       "id": "graph",
-      "name": "Graph",
-      "version": "5.0.0"
+      "name": "Graph (old)",
+      "version": ""
     },
     {
       "type": "datasource",
       "id": "influxdb",
       "name": "InfluxDB",
-      "version": "5.0.0"
+      "version": "1.0.0"
     }
   ],
   "annotations": {
@@ -38,6 +38,12 @@
         "hide": true,
         "iconColor": "rgba(0, 211, 255, 1)",
         "name": "Annotations & Alerts",
+        "target": {
+          "limit": 100,
+          "matchAny": false,
+          "tags": [],
+          "type": "dashboard"
+        },
         "type": "dashboard"
       }
     ]
@@ -47,11 +53,16 @@
   "gnetId": null,
   "graphTooltip": 1,
   "id": null,
-  "iteration": 1554147190110,
+  "iteration": 1628540809511,
   "links": [],
   "panels": [
     {
       "collapsed": false,
+      "datasource": null,
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
       "gridPos": {
         "h": 1,
         "w": 24,
@@ -78,6 +89,7 @@
       "dashes": false,
       "datasource": "${DS_DS_ZADARA}",
       "fill": 1,
+      "fillGradient": 0,
       "gridPos": {
         "h": 8,
         "w": 8,
@@ -85,6 +97,7 @@
         "y": 1
       },
       "height": "300px",
+      "hiddenSeries": false,
       "id": 2,
       "legend": {
         "alignAsTable": true,
@@ -100,8 +113,12 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "connected",
+      "options": {
+        "alertThreshold": true
+      },
       "paceLength": 10,
       "percentage": false,
+      "pluginVersion": "8.1.1",
       "pointradius": 0.5,
       "points": true,
       "renderer": "flot",
@@ -266,6 +283,7 @@
       "dashes": false,
       "datasource": "${DS_DS_ZADARA}",
       "fill": 1,
+      "fillGradient": 0,
       "gridPos": {
         "h": 8,
         "w": 8,
@@ -273,6 +291,7 @@
         "y": 1
       },
       "height": "300px",
+      "hiddenSeries": false,
       "id": 3,
       "legend": {
         "alignAsTable": true,
@@ -290,8 +309,12 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "connected",
+      "options": {
+        "alertThreshold": true
+      },
       "paceLength": 10,
       "percentage": false,
+      "pluginVersion": "8.1.1",
       "pointradius": 0.5,
       "points": true,
       "renderer": "flot",
@@ -448,6 +471,7 @@
       "dashes": false,
       "datasource": "${DS_DS_ZADARA}",
       "fill": 1,
+      "fillGradient": 0,
       "gridPos": {
         "h": 8,
         "w": 8,
@@ -455,6 +479,7 @@
         "y": 1
       },
       "height": "300px",
+      "hiddenSeries": false,
       "id": 1,
       "legend": {
         "alignAsTable": true,
@@ -470,8 +495,12 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "connected",
+      "options": {
+        "alertThreshold": true
+      },
       "paceLength": 10,
       "percentage": false,
+      "pluginVersion": "8.1.1",
       "pointradius": 0.5,
       "points": true,
       "renderer": "flot",
@@ -622,6 +651,11 @@
     },
     {
       "collapsed": false,
+      "datasource": null,
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
       "gridPos": {
         "h": 1,
         "w": 24,
@@ -652,6 +686,7 @@
       "dashes": false,
       "datasource": "${DS_DS_ZADARA}",
       "fill": 1,
+      "fillGradient": 0,
       "gridPos": {
         "h": 8,
         "w": 8,
@@ -659,6 +694,7 @@
         "y": 10
       },
       "height": "300px",
+      "hiddenSeries": false,
       "id": 10,
       "legend": {
         "alignAsTable": true,
@@ -674,8 +710,12 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "connected",
+      "options": {
+        "alertThreshold": true
+      },
       "paceLength": 10,
       "percentage": false,
+      "pluginVersion": "8.1.1",
       "pointradius": 0.5,
       "points": true,
       "renderer": "flot",
@@ -832,6 +872,7 @@
       "dashes": false,
       "datasource": "${DS_DS_ZADARA}",
       "fill": 1,
+      "fillGradient": 0,
       "gridPos": {
         "h": 8,
         "w": 8,
@@ -839,6 +880,7 @@
         "y": 10
       },
       "height": "300px",
+      "hiddenSeries": false,
       "id": 9,
       "legend": {
         "alignAsTable": true,
@@ -854,8 +896,12 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "connected",
+      "options": {
+        "alertThreshold": true
+      },
       "paceLength": 10,
       "percentage": false,
+      "pluginVersion": "8.1.1",
       "pointradius": 0.5,
       "points": true,
       "renderer": "flot",
@@ -1005,6 +1051,7 @@
       "dashes": false,
       "datasource": "${DS_DS_ZADARA}",
       "fill": 1,
+      "fillGradient": 0,
       "gridPos": {
         "h": 8,
         "w": 8,
@@ -1012,6 +1059,7 @@
         "y": 10
       },
       "height": "300px",
+      "hiddenSeries": false,
       "id": 8,
       "legend": {
         "alignAsTable": true,
@@ -1027,8 +1075,12 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "connected",
+      "options": {
+        "alertThreshold": true
+      },
       "paceLength": 10,
       "percentage": false,
+      "pluginVersion": "8.1.1",
       "pointradius": 0.5,
       "points": true,
       "renderer": "flot",
@@ -1179,6 +1231,11 @@
     },
     {
       "collapsed": true,
+      "datasource": null,
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
       "gridPos": {
         "h": 1,
         "w": 24,
@@ -1356,6 +1413,11 @@
     },
     {
       "collapsed": true,
+      "datasource": null,
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
       "gridPos": {
         "h": 1,
         "w": 24,
@@ -1533,6 +1595,11 @@
     },
     {
       "collapsed": true,
+      "datasource": null,
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
       "gridPos": {
         "h": 1,
         "w": 24,
@@ -1710,6 +1777,11 @@
     },
     {
       "collapsed": false,
+      "datasource": null,
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
       "gridPos": {
         "h": 1,
         "w": 24,
@@ -1734,6 +1806,7 @@
       "dashes": false,
       "datasource": "${DS_DS_ZADARA}",
       "fill": 1,
+      "fillGradient": 0,
       "gridPos": {
         "h": 7,
         "w": 12,
@@ -1741,6 +1814,7 @@
         "y": 22
       },
       "height": "250px",
+      "hiddenSeries": false,
       "id": 4,
       "legend": {
         "avg": false,
@@ -1755,8 +1829,12 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "connected",
+      "options": {
+        "alertThreshold": true
+      },
       "paceLength": 10,
       "percentage": false,
+      "pluginVersion": "8.1.1",
       "pointradius": 0.5,
       "points": true,
       "renderer": "flot",
@@ -1896,6 +1974,7 @@
       "dashes": false,
       "datasource": "${DS_DS_ZADARA}",
       "fill": 1,
+      "fillGradient": 0,
       "gridPos": {
         "h": 7,
         "w": 12,
@@ -1903,6 +1982,7 @@
         "y": 22
       },
       "height": "250px",
+      "hiddenSeries": false,
       "id": 5,
       "legend": {
         "avg": false,
@@ -1917,8 +1997,12 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "connected",
+      "options": {
+        "alertThreshold": true
+      },
       "paceLength": 10,
       "percentage": false,
+      "pluginVersion": "8.1.1",
       "pointradius": 0.5,
       "points": true,
       "renderer": "flot",
@@ -2055,6 +2139,11 @@
     },
     {
       "collapsed": false,
+      "datasource": null,
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
       "gridPos": {
         "h": 1,
         "w": 24,
@@ -2078,6 +2167,7 @@
       "dashes": false,
       "datasource": "${DS_DS_ZADARA}",
       "fill": 1,
+      "fillGradient": 0,
       "gridPos": {
         "h": 7,
         "w": 12,
@@ -2085,6 +2175,7 @@
         "y": 30
       },
       "height": "250px",
+      "hiddenSeries": false,
       "id": 37,
       "legend": {
         "avg": false,
@@ -2099,8 +2190,12 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "connected",
+      "options": {
+        "alertThreshold": true
+      },
       "paceLength": 10,
       "percentage": false,
+      "pluginVersion": "8.1.1",
       "pointradius": 0.5,
       "points": true,
       "renderer": "flot",
@@ -2240,6 +2335,7 @@
       "dashes": false,
       "datasource": "${DS_DS_ZADARA}",
       "fill": 1,
+      "fillGradient": 0,
       "gridPos": {
         "h": 7,
         "w": 12,
@@ -2247,6 +2343,7 @@
         "y": 30
       },
       "height": "250px",
+      "hiddenSeries": false,
       "id": 38,
       "legend": {
         "avg": false,
@@ -2261,8 +2358,12 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "connected",
+      "options": {
+        "alertThreshold": true
+      },
       "paceLength": 10,
       "percentage": false,
+      "pluginVersion": "8.1.1",
       "pointradius": 0.5,
       "points": true,
       "renderer": "flot",
@@ -2399,6 +2500,11 @@
     },
     {
       "collapsed": false,
+      "datasource": null,
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
       "gridPos": {
         "h": 1,
         "w": 24,
@@ -2424,12 +2530,14 @@
       "dashes": false,
       "datasource": "${DS_DS_ZADARA}",
       "fill": 1,
+      "fillGradient": 0,
       "gridPos": {
         "h": 7,
         "w": 12,
         "x": 0,
         "y": 38
       },
+      "hiddenSeries": false,
       "id": 11,
       "legend": {
         "avg": true,
@@ -2444,8 +2552,12 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "connected",
+      "options": {
+        "alertThreshold": true
+      },
       "paceLength": 10,
       "percentage": false,
+      "pluginVersion": "8.1.1",
       "pointradius": 0.5,
       "points": true,
       "renderer": "flot",
@@ -2601,12 +2713,14 @@
       "dashes": false,
       "datasource": "${DS_DS_ZADARA}",
       "fill": 1,
+      "fillGradient": 0,
       "gridPos": {
         "h": 7,
         "w": 12,
         "x": 12,
         "y": 38
       },
+      "hiddenSeries": false,
       "id": 12,
       "legend": {
         "avg": true,
@@ -2621,8 +2735,12 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "connected",
+      "options": {
+        "alertThreshold": true
+      },
       "paceLength": 10,
       "percentage": false,
+      "pluginVersion": "8.1.1",
       "pointradius": 0.5,
       "points": true,
       "renderer": "flot",
@@ -2656,24 +2774,6 @@
             [
               {
                 "params": [
-                  "mem_active"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "mean"
-              },
-              {
-                "params": [
-                  "active"
-                ],
-                "type": "alias"
-              }
-            ],
-            [
-              {
-                "params": [
                   "mem_alloc"
                 ],
                 "type": "field"
@@ -2703,7 +2803,7 @@
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "Memory (Stacked)",
+      "title": "Memory",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -2743,6 +2843,11 @@
     },
     {
       "collapsed": false,
+      "datasource": null,
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
       "gridPos": {
         "h": 1,
         "w": 24,
@@ -2765,6 +2870,7 @@
       "dashes": false,
       "datasource": "${DS_DS_ZADARA}",
       "fill": 1,
+      "fillGradient": 0,
       "gridPos": {
         "h": 7,
         "w": 8,
@@ -2772,6 +2878,7 @@
         "y": 46
       },
       "height": "250px",
+      "hiddenSeries": false,
       "id": 17,
       "legend": {
         "avg": true,
@@ -2786,8 +2893,12 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "connected",
+      "options": {
+        "alertThreshold": true
+      },
       "paceLength": 10,
       "percentage": false,
+      "pluginVersion": "8.1.1",
       "pointradius": 0.5,
       "points": true,
       "renderer": "flot",
@@ -2915,6 +3026,7 @@
       "dashes": false,
       "datasource": "${DS_DS_ZADARA}",
       "fill": 1,
+      "fillGradient": 0,
       "gridPos": {
         "h": 7,
         "w": 8,
@@ -2922,6 +3034,7 @@
         "y": 46
       },
       "height": "250px",
+      "hiddenSeries": false,
       "id": 16,
       "legend": {
         "avg": true,
@@ -2936,8 +3049,12 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "connected",
+      "options": {
+        "alertThreshold": true
+      },
       "paceLength": 10,
       "percentage": false,
+      "pluginVersion": "8.1.1",
       "pointradius": 0.5,
       "points": true,
       "renderer": "flot",
@@ -3065,6 +3182,7 @@
       "dashes": false,
       "datasource": "${DS_DS_ZADARA}",
       "fill": 1,
+      "fillGradient": 0,
       "gridPos": {
         "h": 7,
         "w": 8,
@@ -3072,6 +3190,7 @@
         "y": 46
       },
       "height": "250px",
+      "hiddenSeries": false,
       "id": 18,
       "legend": {
         "avg": true,
@@ -3086,8 +3205,12 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "connected",
+      "options": {
+        "alertThreshold": true
+      },
       "paceLength": 10,
       "percentage": false,
+      "pluginVersion": "8.1.1",
       "pointradius": 0.5,
       "points": true,
       "renderer": "flot",
@@ -3207,6 +3330,11 @@
     },
     {
       "collapsed": false,
+      "datasource": null,
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
       "gridPos": {
         "h": 1,
         "w": 24,
@@ -3256,6 +3384,7 @@
       "nullPointMode": "connected",
       "paceLength": 10,
       "percentage": false,
+      "pluginVersion": "8.1.1",
       "pointradius": 0.5,
       "points": true,
       "renderer": "flot",
@@ -3405,6 +3534,7 @@
       "nullPointMode": "connected",
       "paceLength": 10,
       "percentage": false,
+      "pluginVersion": "8.1.1",
       "pointradius": 0.5,
       "points": true,
       "renderer": "flot",
@@ -3521,7 +3651,7 @@
     }
   ],
   "refresh": false,
-  "schemaVersion": 18,
+  "schemaVersion": 30,
   "style": "dark",
   "tags": [],
   "templating": {
@@ -3531,6 +3661,8 @@
         "current": {},
         "datasource": "${DS_DS_ZADARA}",
         "definition": "",
+        "description": null,
+        "error": null,
         "hide": 0,
         "includeAll": true,
         "label": "VPSA",
@@ -3543,7 +3675,6 @@
         "skipUrlSync": false,
         "sort": 0,
         "tagValuesQuery": "",
-        "tags": [],
         "tagsQuery": "",
         "type": "query",
         "useTags": false
@@ -3553,6 +3684,8 @@
         "current": {},
         "datasource": "${DS_DS_ZADARA}",
         "definition": "",
+        "description": null,
+        "error": null,
         "hide": 0,
         "includeAll": false,
         "label": "Device Type",
@@ -3565,7 +3698,6 @@
         "skipUrlSync": false,
         "sort": 0,
         "tagValuesQuery": "",
-        "tags": [],
         "tagsQuery": "",
         "type": "query",
         "useTags": false
@@ -3575,6 +3707,8 @@
         "current": {},
         "datasource": "${DS_DS_ZADARA}",
         "definition": "",
+        "description": null,
+        "error": null,
         "hide": 0,
         "includeAll": true,
         "label": "Server Name",
@@ -3587,7 +3721,6 @@
         "skipUrlSync": false,
         "sort": 0,
         "tagValuesQuery": "",
-        "tags": [],
         "tagsQuery": "",
         "type": "query",
         "useTags": false
@@ -3597,6 +3730,8 @@
         "current": {},
         "datasource": "${DS_DS_ZADARA}",
         "definition": "",
+        "description": null,
+        "error": null,
         "hide": 0,
         "includeAll": true,
         "label": "IO Type",
@@ -3609,7 +3744,6 @@
         "skipUrlSync": false,
         "sort": 0,
         "tagValuesQuery": "",
-        "tags": [],
         "tagsQuery": "",
         "type": "query",
         "useTags": false
@@ -3619,6 +3753,8 @@
         "current": {},
         "datasource": "${DS_DS_ZADARA}",
         "definition": "",
+        "description": null,
+        "error": null,
         "hide": 0,
         "includeAll": true,
         "label": "Device Name",
@@ -3631,7 +3767,6 @@
         "skipUrlSync": false,
         "sort": 0,
         "tagValuesQuery": "",
-        "tags": [],
         "tagsQuery": "",
         "type": "query",
         "useTags": false
@@ -3670,5 +3805,5 @@
   "timezone": "utc",
   "title": "Main",
   "uid": "0bH9sYlmk",
-  "version": 5
+  "version": 2
 }

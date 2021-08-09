@@ -164,11 +164,11 @@ func (d *dataio) ingestMeteringTable(tableName string, vpsa string) (err error) 
 		for n, v := range row {
 			if v != nil {
 				switch reflect.TypeOf(v).String() {
-				case "[]uint8":
+				case "string":
 					if n == "measurement" {
-						measurement = string(v.([]uint8))
+						measurement = v.(string)
 					} else {
-						tags[n] = string(v.([]uint8))
+						tags[n] = v.(string)
 					}
 				default:
 					// For "rstjobs" types - apparently the dev_server_name and dev_target_name can be 0 - this causes
