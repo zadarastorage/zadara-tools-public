@@ -128,7 +128,7 @@ IFS=$(echo -en "\\n\\b")
 if [ $? -ne 0 ]; then
     echo "Cannot locate any zipped metering databases in the "metering_files" directory.  No new databases will be processed."
 else
-    for meteringpackage in "${dest}/metering*.zip"; do
+    find "${dest}" -type f -name "metering*.zip" -print0 | while IFS= read -r -d '' meteringpackage; do
         filename=$(basename ${meteringpackage})
         targetfile=$(sed -e 's#^metering_\\(.*\\)_\\(20[0-9]\\)\\(.*\\).zip#\\2\\3#g' <<< "${filename// /_}")
         targetfolder=$(sed -e 's#^metering_\\(.*\\)_'${targetfile}'.zip#\\1#g' <<< "${filename// /_}")
