@@ -16,6 +16,7 @@ $grafana_local_port = "3000"
 
 ## First Run Scripts
 $install_influxdb = <<SCRIPT
+sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys D8FF8E1F7DF8B07E
 echo "Installing InfluxDB..."
 curl -sL https://repos.influxdata.com/influxdb.key | sudo apt-key add - 2>/dev/null
 source /etc/lsb-release
